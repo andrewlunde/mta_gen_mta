@@ -6,9 +6,30 @@
   },
   "routes": [
     {
+      "source": "(nodejs/)(.*)",
+      "destination": "gen_mta_njs_be",
+      "csrfProtection": true,
+      "authenticationType": "xsuaa"
+    },
+    {
+      "source": "(cf-cli/)(.*)",
+      "destination": "gen_mta_doc_be",
+      "csrfProtection": true,
+      "authenticationType": "xsuaa"
+    },
+    {
+      "source": "(python/)(.*)",
+      "destination": "gen_mta_pyt_be",
+      "csrfProtection": true,
+      "authenticationType": "xsuaa"
+    },
+    {
       "localDir": "resources",
       "source": "^/(.*)",
       "authenticationType": "none"
     }
   ]
 }
+
+
+

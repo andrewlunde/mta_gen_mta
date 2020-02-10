@@ -7,6 +7,67 @@ modules:
 
 ### New Modules Here ###
 
+ - name: gen_mta-doc
+   type: custom
+   build-parameters:
+      no-source: true
+   parameters:
+      memory: 1G
+      health-check-type: none
+      docker:
+         image: alunde/cf-cli:latest
+   provides:
+    - name: gen_mta_doc_api
+      properties:
+         url: ${default-url}
+   requires:
+    - name: gen_mta-uaa
+    - name: gen_mta-hdi
+    - name: gen_mta-ss
+
+ - name: gen_mta-njs
+   type: nodejs
+   path: nodejs
+   parameters:
+      memory: 512M
+      disk-quota: 256M
+      #host: gen_mta-njs-${space}
+      #domain: yourdomain.com
+   provides:
+    - name: gen_mta_njs_api
+      properties:
+         url: ${default-url}
+   requires:
+    - name: gen_mta-uaa
+    - name: gen_mta-hdi
+    - name: gen_mta-ss
+
+ - name: gen_mta-pyt
+   type: python
+   path: python
+   parameters:
+      memory: 512M
+      disk-quota: 256M
+      #host: gen_mta-pyt-${space}
+      #domain: yourdomain.com
+   provides:
+    - name: gen_mta_pyt_api
+      properties:
+         url: ${default-url}
+   requires:
+    - name: gen_mta-uaa
+    - name: gen_mta-hdi
+    - name: gen_mta-ss
+
+ - name: gen_mta-hdb
+   type: hdb
+   path: db
+   parameters:
+      memory: 512M
+      disk-quota: 512M
+   requires:
+    - name: gen_mta-hdi
+
  - name: gen_mta-web
    type: html5
    path: web
@@ -16,10 +77,40 @@ modules:
    requires:
     - name: gen_mta-uaa
    ### New Destinations Here ###
+    - name: gen_mta_njs_api
+      group: destinations
+      properties:
+         name: gen_mta_njs_be
+         url: ~{url}
+         forwardAuthToken: true
+    - name: gen_mta_doc_api
+      group: destinations
+      properties:
+         name: gen_mta_doc_be
+         url: ~{url}
+         forwardAuthToken: true
+    - name: gen_mta_pyt_api
+      group: destinations
+      properties:
+         name: gen_mta_pyt_be
+         url: ~{url}
+         forwardAuthToken: true
 
 resources:
 
 ### New Resources Here ###
+
+ - name: gen_mta-ss
+   type: com.sap.xs.hana-securestore
+   parameters:
+      service-name: GEN_MTA_SS
+
+ - name: gen_mta-hdi
+   type: com.sap.xs.hdi-container
+   parameters:
+      service-name: GEN_MTA_HDI
+      config:
+         schema: GEN_MTA_DB
 
  - name: gen_mta-uaa
    parameters:
@@ -28,3 +119,9 @@ resources:
       service: xsuaa
       service-name: GEN_MTA_UAA
    type: org.cloudfoundry.managed-service
+
+
+
+
+
+
