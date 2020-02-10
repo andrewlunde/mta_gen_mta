@@ -6,6 +6,12 @@
   },
   "routes": [
     {
+      "source": "(java/)(.*)",
+      "destination": "gen_mta_jav_be",
+      "csrfProtection": true,
+      "authenticationType": "xsuaa"
+    },
+    {
       "source": "(nodejs/)(.*)",
       "destination": "gen_mta_njs_be",
       "csrfProtection": true,
@@ -30,6 +36,7 @@
     }
   ]
 }
+
 
 
 

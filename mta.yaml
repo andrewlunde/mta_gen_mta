@@ -7,6 +7,22 @@ modules:
 
 ### New Modules Here ###
 
+ - name: gen_mta-jav
+   type: java
+   path: java
+   parameters:
+      memory: 256M
+      disk-quota: 512M
+      #host: gen_mta-jav-${space}
+      #domain: yourdomain.com
+   provides:
+    - name: gen_mta_jav_api
+      properties:
+         url: ${default-url}
+   requires:
+    - name: gen_mta-uaa
+    - name: gen_mta-hdi
+
  - name: gen_mta-doc
    type: custom
    build-parameters:
@@ -30,7 +46,7 @@ modules:
    path: nodejs
    parameters:
       memory: 512M
-      disk-quota: 256M
+      disk-quota: 512M
       #host: gen_mta-njs-${space}
       #domain: yourdomain.com
    provides:
@@ -47,7 +63,7 @@ modules:
    path: python
    parameters:
       memory: 512M
-      disk-quota: 256M
+      disk-quota: 512M
       #host: gen_mta-pyt-${space}
       #domain: yourdomain.com
    provides:
@@ -77,6 +93,12 @@ modules:
    requires:
     - name: gen_mta-uaa
    ### New Destinations Here ###
+    - name: gen_mta_jav_api
+      group: destinations
+      properties:
+         name: gen_mta_jav_be
+         url: ~{url}
+         forwardAuthToken: true
     - name: gen_mta_njs_api
       group: destinations
       properties:
@@ -119,6 +141,7 @@ resources:
       service: xsuaa
       service-name: GEN_MTA_UAA
    type: org.cloudfoundry.managed-service
+
 
 
 
