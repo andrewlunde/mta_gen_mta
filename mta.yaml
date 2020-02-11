@@ -11,7 +11,7 @@ modules:
    type: java
    path: java
    parameters:
-      memory: 256M
+      memory: 1024M
       disk-quota: 512M
       #host: gen_mta-jav-${space}
       #domain: yourdomain.com
